@@ -6,7 +6,9 @@ import { BookOpen, ExternalLink } from "lucide-react";
 const Archivo = () => {
   const [filter, setFilter] = useState<string>("");
   const UNA_NOCHE_EN_LA_OPERA_PDF = "/1935 - Una noche en la ópera.pdf";
+  const CIUDADANO_KANE_Y_PRIMERA_PLANA_PDF = "/1941 - Ciudadano Kane y 1974 - Primera Plana.pdf";
   const CHINATOWN_1974_PDF = "/1974 - Chinatown.pdf";
+  const APOCALYPSE_NOW_1979_PDF = "/1979 - Apocalypse now.pdf";
   const SUNSET_BOULEVARD_1950_PDF = "/1950 - Sunset Boulevard.pdf";
   const EL_HOMBRE_DEL_BRAZO_DE_ORO_1955_PDF = "/1955 - El hombre del brazo de oro y 1988 - Bird.pdf";
   const CASABLANCA_1942_PDF = "/1942 - Casablanca.pdf";
@@ -16,7 +18,9 @@ const Archivo = () => {
   // Helper to return a PDF URL for a given film (if available)
   const getFilmPdfUrl = (pelicula: { titulo: string; anio: number }) => {
     if (pelicula.anio === 1935 && pelicula.titulo === "Una noche en la ópera") return UNA_NOCHE_EN_LA_OPERA_PDF;
+    if (pelicula.anio === 1941 && pelicula.titulo === "Ciudadano Kane") return CIUDADANO_KANE_Y_PRIMERA_PLANA_PDF;
     if (pelicula.anio === 1974 && pelicula.titulo === "Chinatown") return CHINATOWN_1974_PDF;
+    if (pelicula.anio === 1979 && pelicula.titulo === "Apocalypse Now") return APOCALYPSE_NOW_1979_PDF;
     if (pelicula.anio === 1950 && pelicula.titulo === "Sunset Boulevard") return SUNSET_BOULEVARD_1950_PDF;
     if (pelicula.anio === 1955 && pelicula.titulo === "El hombre del brazo de oro") return EL_HOMBRE_DEL_BRAZO_DE_ORO_1955_PDF;
     if (pelicula.anio === 1942 && pelicula.titulo === "Casablanca") return CASABLANCA_1942_PDF;
@@ -24,6 +28,26 @@ const Archivo = () => {
     if (pelicula.anio === 1960 && pelicula.titulo === "Espartaco") return ESPARTACO_1960_Y_BLADE_RUNNER_1982_PDF;
     if (pelicula.anio === 1982 && pelicula.titulo === "Blade Runner") return ESPARTACO_1960_Y_BLADE_RUNNER_1982_PDF;
     return undefined;
+  };
+
+  const getFilmDisplay = (pelicula: { titulo: string; anio: number; director: string }) => {
+    if (pelicula.anio === 1941 && pelicula.titulo === "Ciudadano Kane") {
+      return {
+        anio: "1941 / 1974",
+        titulo: "Ciudadano Kane y Primera Plana",
+        director: "Orson Welles y Billy Wilder",
+      };
+    }
+
+    if (pelicula.anio === 1955 && pelicula.titulo === "El hombre del brazo de oro") {
+      return {
+        anio: "1955 / 1988",
+        titulo: "El hombre del brazo de oro y Bird",
+        director: "Otto Preminger y Clint Eastwood",
+      };
+    }
+
+    return pelicula;
   };
 
   // Only consider films that have an attached PDF
@@ -87,6 +111,7 @@ const Archivo = () => {
           <div className="space-y-0">
             {peliculasFiltradas.map((pelicula, index) => {
               const pdfUrl = getFilmPdfUrl(pelicula)!;
+              const filmDisplay = getFilmDisplay(pelicula);
 
               return (
                 <article
@@ -102,19 +127,19 @@ const Archivo = () => {
                     <div className="col-span-1 text-muted-foreground text-sm">
                       {String(index + 1).padStart(2, '0')}
                     </div>
-                    <div className="col-span-2 md:col-span-1">
+                    <div className="col-span-3 md:col-span-2">
                       <span className="text-primary font-display text-lg">
-                        {pelicula.anio}
+                        {filmDisplay.anio}
                       </span>
                     </div>
-                    <div className="col-span-9 md:col-span-5">
+                    <div className="col-span-8 md:col-span-4">
                       <h3 className="text-lg font-display text-foreground group-hover:text-primary transition-colors">
-                        {pelicula.titulo}
+                        {filmDisplay.titulo}
                       </h3>
                     </div>
                     <div className="col-span-12 md:col-span-5 md:text-right">
                       <div className="inline-flex items-center justify-end gap-2">
-                        <span className="text-muted-foreground">{pelicula.director}</span>
+                        <span className="text-muted-foreground">{filmDisplay.director}</span>
                         <ExternalLink size={16} className="text-primary" />
                         <span className="sr-only">Ver documento</span>
                       </div>
